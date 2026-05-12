@@ -545,7 +545,7 @@ const SingleStudent = () => {
         name: studentData.userId?.name || "",
         username: studentData.userId?.username || "",
         phone: studentData.phone || "",
-        parentName: studentData.parentName || "",
+        parentsName: studentData.parentsName || "",
         rollNumber: studentData.rollNumber || "",
       });
     } catch (error) {
@@ -566,7 +566,15 @@ const SingleStudent = () => {
       console.log(error);
     }
   };
+  const toggleStudentStatus = async () => {
+    try {
+      const res = await api.put(`/admin/toggle-student-status/${id}`);
 
+      setStudent(res.data.student);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const averageScore = useMemo(() => {
     if (!student?.terms?.length) return 0;
 
@@ -610,12 +618,12 @@ const SingleStudent = () => {
             <h1 className="text-base md:text-xl font-black tracking-widest uppercase  text-teal-400 ">
               Student Profile
             </h1>
-
-            {!editMode && (
-              <button
-                type="button"
-                onClick={() => setEditMode(true)}
-                className="
+            <div className="flex gap-5">
+              {!editMode && (
+                <button
+                  type="button"
+                  onClick={() => setEditMode(true)}
+                  className="
                   px-5 py-2.5
                   bg-teal-600
                   hover:bg-teal-700
@@ -623,10 +631,28 @@ const SingleStudent = () => {
                   rounded-2xl
                   transition
                 "
+                >
+                  Edit
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={toggleStudentStatus}
+                className={`
+    px-5 py-2.5
+    rounded-2xl
+    text-white
+    transition
+    ${
+      student.userId?.isActive
+        ? "bg-red-500 hover:bg-red-600"
+        : "bg-green-500 hover:bg-green-600"
+    }
+  `}
               >
-                Edit
+                {student.userId?.isActive ? "Deactivate" : "Activate"}
               </button>
-            )}
+            </div>
           </div>
 
           <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 mt-5">
@@ -696,8 +722,17 @@ const SingleStudent = () => {
 
             {/* Status */}
             <div className="flex flex-wrap gap-3">
-              <div className="min-h-[52px] flex items-center bg-green-100 text-green-700 px-5 py-3 rounded-2xl text-sm font-medium">
-                {student.userId?.isActive ? "Active Student" : "Inactive"}
+              <div
+                className={`min-h-[52px] flex items-center  text-green-700 px-5 py-3 rounded-2xl text-sm font-medium
+                  ${student.userId?.isActive ? "bg-green-200" : "bg-red-200"}`}
+              >
+                <h2
+                  className={`text-xl font-bold ${
+                    student.userId?.isActive ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {student.userId?.isActive ? "Active" : "Inactive"}
+                </h2>
               </div>
 
               <div className="min-h-[52px] flex items-center bg-yellow-100 text-yellow-700 px-5 py-3 rounded-2xl text-sm font-medium">
@@ -919,12 +954,12 @@ const SingleStudent = () => {
 
                     {editMode ? (
                       <input
-                        {...register("parentName")}
+                        {...register("parentsName")}
                         className={inputStyle}
                       />
                     ) : (
                       <h3 className="font-semibold text-gray-800">
-                        {student.parentName || "-"}
+                        {student.parentsName || "-"}
                       </h3>
                     )}
                   </div>
@@ -1009,7 +1044,7 @@ const SingleStudent = () => {
                   name: student.userId?.name || "",
                   username: student.userId?.username || "",
                   phone: student.phone || "",
-                  parentName: student.parentName || "",
+                  parentsName: student.parentsName || "",
                   rollNumber: student.rollNumber || "",
                 });
               }}
