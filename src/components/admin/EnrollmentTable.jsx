@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const EnrollmentTable = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchEnrollments = async () => {
       try {
@@ -46,11 +46,15 @@ const EnrollmentTable = () => {
 
         <tbody>
           {students.map((student) => (
-            <tr key={student._id} className="border-t">
+            <tr
+              onClick={() => navigate(`/admin/student/${student._id}`)}
+              key={student._id}
+              className="border-t cursor-pointer hover:bg-teal-50 "
+            >
               {/* Student */}
-              <td className="py-3">
+              <td className="py-3 ">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-teal-100 text-teal-700 rounded-full flex items-center justify-center text-xs font-bold">
+                  <div className="w-8 h-8 bg-teal-100  text-teal-700 rounded-full flex items-center justify-center text-xs font-bold">
                     {student.name?.charAt(0)}
                   </div>
                   <div>

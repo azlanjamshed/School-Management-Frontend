@@ -14,6 +14,9 @@ import Students from "./pages/Admin/Students";
 import Teachers from "./pages/Admin/Teachers";
 import Classes from "./pages/Admin/Classes";
 import AssignTeacher from "./pages/Admin/AssignTeacher";
+import SingleStudent from "./pages/Admin/SingleStudent";
+import SingleTeacher from "./pages/Admin/SingleTeacher";
+import SingleClass from "./pages/Admin/SingleClass";
 
 function App() {
   return (
@@ -33,8 +36,11 @@ function App() {
           <Route path="create-teacher" element={<CreateTeacher />} />
           <Route path="create-student" element={<CreateStudent />} />
           <Route path="students" element={<Students />} />
+          <Route path="/admin/student/:id" element={<SingleStudent />} />
           <Route path="teachers" element={<Teachers />} />
+          <Route path="/admin/teacher/:id" element={<SingleTeacher />} />
           <Route path="classes" element={<Classes />} />
+          <Route path="/admin/class/:id" element={<SingleClass />} />
           <Route path="assign-teacher" element={<AssignTeacher />} />
         </Route>
 
